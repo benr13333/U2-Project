@@ -111,6 +111,7 @@ public class Player
 
     }
 
+
     public static void playerCreation()
     {
         Scanner scanner = new Scanner(System.in);
@@ -173,7 +174,17 @@ public class Player
 
     }
 
-
+    public boolean isAlive()
+    {
+        if(currentHealth > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 
 

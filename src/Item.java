@@ -29,9 +29,11 @@ public class Item
             System.out.println(type);
             System.out.println(damage);
         }
-        else
+        else if (type == ItemType.CONSUMABLE)
         {
-            //implement later
+            System.out.println(name);
+            System.out.println(type);
+            System.out.println(healAmount);
         }
     }
 

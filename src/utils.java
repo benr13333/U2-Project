@@ -24,4 +24,17 @@ public class utils
         }
         System.out.println();
     }
+
+    public static void delay(int delay)
+    {
+        try
+        {
+            Thread.sleep(300);
+        }
+        catch(InterruptedException e)
+        {
+            System.out.println("failed!");
+        }
+        System.out.println();
+    }
 }
