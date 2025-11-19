@@ -23,6 +23,7 @@ public class Player
 
 
 
+
     public enum PlayerClass
     {
         WARRIOR(12, 15, 10, 6, 2, 5),
@@ -74,6 +75,11 @@ public class Player
         }
     }
 
+    public void printInventory()
+    {
+        inventory.printInventory();
+    }
+
     public Player(String name, PlayerClass playerClass)
     {
         this.name = name;
@@ -90,10 +96,10 @@ public class Player
 
         switch(playerClass)
         {
-            case WARRIOR -> inventory.addItem("Basic Sword");
-            case MAGE -> inventory.addItem("Basic Staff");
-            case ROGUE -> inventory.addItem("Basic Dagger");
-            case GUARDIAN -> inventory.addItem("Basic WarHammer");
+            case WARRIOR -> inventory.addItem(ItemManager.createBasicSword());
+            case MAGE -> inventory.addItem(ItemManager.createBasicStaff());
+            case ROGUE -> inventory.addItem(ItemManager.createBasicDagger());
+            case GUARDIAN -> inventory.addItem(ItemManager.createBasicWarHammer());
         }
     }
 
@@ -102,6 +108,7 @@ public class Player
     {
         this.maxHealth = vigor * 10;
         this.currentHealth = maxHealth;
+
     }
 
     public static void playerCreation()
@@ -131,6 +138,7 @@ public class Player
                         String.format("%-12s %-12s %-12s %-12s", "Evade: 5", "Evade: 20", "Evade: 8", "Evade: 3")
         );
 
+        Player player = null;
 
         Boolean hasAnswered = false;
 
@@ -139,19 +147,19 @@ public class Player
             String answer = scanner.nextLine();
 
             if (answer.equalsIgnoreCase("warrior")) {
-                Player player = new Player(playerName, PlayerClass.WARRIOR);
+                 player = new Player(playerName, PlayerClass.WARRIOR);
                 hasAnswered = true;
             }
             else if (answer.equalsIgnoreCase("rogue")) {
-                Player player = new Player(playerName, PlayerClass.ROGUE);
+                 player = new Player(playerName, PlayerClass.ROGUE);
                 hasAnswered = true;
             }
             else if (answer.equalsIgnoreCase("mage")) {
-                Player player = new Player(playerName, PlayerClass.MAGE);
+                 player = new Player(playerName, PlayerClass.MAGE);
                 hasAnswered = true;
             }
             else if (answer.equalsIgnoreCase("guardian")) {
-                Player player = new Player(playerName, PlayerClass.GUARDIAN);
+                 player = new Player(playerName, PlayerClass.GUARDIAN);
                 hasAnswered = true;
             }
             else
@@ -161,7 +169,12 @@ public class Player
         }
 
         System.out.println("PLAYER CREATED" );
+        player.printInventory();
+
     }
+
+
+
 
 
 }
