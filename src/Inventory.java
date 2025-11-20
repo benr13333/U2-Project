@@ -10,6 +10,23 @@ public class Inventory
         inventory.add(addition);
     }
 
+    public ArrayList<Item> printWeaponsAndReturnList() {
+        ArrayList<Item> weapons = new ArrayList<>();
+        int count = 1;
+
+        for (Item item : inventory) {
+            if (item.getType() == Item.ItemType.WEAPON) {
+                System.out.println(count + ") " + item);
+                System.out.println("----------------");
+                weapons.add(item);
+                count++;
+            }
+        }
+
+        return weapons; // filtered weapon list
+    }
+
+
     public void printWeapons()
     {
         for(int i = 0; i <= inventory.size() - 1; i++)
@@ -35,6 +52,10 @@ public class Inventory
             }
         }
     }
+
+
+
+
 
 
 

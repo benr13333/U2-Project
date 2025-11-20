@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+import java.util.ArrayList;
 
 public class Player
 {
@@ -20,6 +20,7 @@ public class Player
     private int currentHealth;
 
     private Inventory inventory = new Inventory();
+    private Item equippedWeapon;
 
 
     public enum PlayerClass
@@ -193,10 +194,39 @@ public class Player
 
     //INVENTORY STUFF
 
-        //Getter
+    //Getter
     public Inventory getInventory()
     {
         return inventory;
     }
+
+    //Modify Inventory
+
+    public void equipWeapon(Scanner scanner, Inventory inventory)
+    {
+        ArrayList<Item> weapons = inventory.printWeaponsAndReturnList();
+
+        if (weapons.isEmpty())
+        {
+            System.out.println("You have no weapons to equip.");
+            return;
+        }
+
+        System.out.print("Choose a weapon by number: ");
+        String input = scanner.nextLine();
+        int choice;
+        choice = Integer.parseInt(input);
+
+        if (choice < 1 || choice > weapons.size()) {
+            System.out.println("You don't have this many weapons!");
+            return;
+        }
+
+        Item selected = weapons.get(choice - 1);
+        equippedWeapon = selected;
+        System.out.println("Equipped: " + selected.getName());
+    }
+
+
 }
 

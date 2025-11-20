@@ -46,6 +46,10 @@ public class Item
         return type;
     }
 
+    public String getName()
+    {
+        return name;
+    }
 
 
 
