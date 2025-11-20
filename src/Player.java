@@ -22,8 +22,6 @@ public class Player
     private Inventory inventory = new Inventory();
 
 
-
-
     public enum PlayerClass
     {
         WARRIOR(12, 15, 10, 6, 2, 5),
@@ -48,7 +46,7 @@ public class Player
             this.evadeChance = evadeChance;
         }
 
-
+        //getters
         public int getVigor()
         {
             return vigor;
@@ -75,10 +73,6 @@ public class Player
         }
     }
 
-    public void printInventory()
-    {
-        inventory.printInventory();
-    }
 
     public Player(String name, PlayerClass playerClass)
     {
@@ -112,7 +106,7 @@ public class Player
     }
 
 
-    public static void playerCreation()
+    public static Player playerCreation()
     {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your name: ");
@@ -170,8 +164,18 @@ public class Player
         }
 
         System.out.println("PLAYER CREATED" );
-        player.printInventory();
+        currentPlayer = player;
+        return player;
+    }
 
+
+    //This makes multiple players not work but I probably won't do that so it doesn't matter
+    //It also saves me a bunch of time
+    private static Player currentPlayer;
+
+    public static Player currentPlayer()
+    {
+        return currentPlayer;
     }
 
     public boolean isAlive()
@@ -187,6 +191,12 @@ public class Player
     }
 
 
+    //INVENTORY STUFF
 
+        //Getter
+    public Inventory getInventory()
+    {
+        return inventory;
+    }
 }
 

@@ -22,6 +22,52 @@ public class Item
         this.healAmount = healAmount;
     }
 
+
+    //override the Object.toString class so that I can just print the string in Inventory and not get some weird hash
+    @Override
+    public String toString()
+    {
+        if (type == ItemType.WEAPON)
+        {
+            return String.format("Name: %s, Damage: %d", name, damage);
+        }
+        else if (type == ItemType.CONSUMABLE)
+        {
+            return String.format("Name: %s, Heal: %d", name, healAmount);
+        }
+        else
+        {
+            return name;
+        }
+    }
+
+    public ItemType getType()
+    {
+        return type;
+    }
+
+
+
+
+    /*
+    Deprecated to adhere to OOP standards
+    public void printWeaponList() {
+        if (type == ItemType.WEAPON) {
+            System.out.println("Name: " + name);
+            System.out.println("Damage: " + damage);
+        }
+    }
+    public void printPotionList() {
+        if (type == ItemType.CONSUMABLE) {
+            System.out.println("Name: " + name);
+            System.out.println("Status Change" + healAmount);
+        }
+    }
+
+     */
+
+    /*
+    Deprecated
     public void printItemStats()
     {
         if (type == ItemType.WEAPON) {
@@ -36,5 +82,7 @@ public class Item
             System.out.println(healAmount);
         }
     }
+
+     */
 
 }

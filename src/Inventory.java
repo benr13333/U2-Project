@@ -10,13 +10,32 @@ public class Inventory
         inventory.add(addition);
     }
 
-    public void printInventory()
+    public void printWeapons()
     {
         for(int i = 0; i <= inventory.size() - 1; i++)
         {
-            inventory.get(i).printItemStats();
+            Item item = inventory.get(i);
+            if (item.getType() == Item.ItemType.WEAPON)
+            {
+                System.out.println(item); // calls toString()
+                System.out.println("----------------");
+            }
         }
     }
+
+    public void printPotions()
+    {
+        for(int i = 0; i <= inventory.size() - 1; i++)
+        {
+            Item item = inventory.get(i);
+            if (item.getType() == Item.ItemType.CONSUMABLE)
+            {
+                System.out.println(item); // calls toString()
+                System.out.println("----------------");
+            }
+        }
+    }
+
 
 
 }
