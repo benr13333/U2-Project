@@ -4,6 +4,8 @@ public class Main
 {
     public static void main(String[] args)
     {
+        DifficultyManager.difficulty currentDifficulty = DifficultyManager.askForDifficulty();
+
         Player.playerCreation();
 
         Main game = new Main();
@@ -14,6 +16,7 @@ public class Main
         UI userInterface = new UI();
         Scanner scanner = new Scanner(System.in);
         Boolean inputActive = true;
+
         while (inputActive) {
             System.out.print("> ");
             String input = scanner.nextLine().trim().toLowerCase();
@@ -23,10 +26,25 @@ public class Main
                 {
                     System.out.println("\nHELP COMMANDS \n========================");
                     System.out.println("\"inventory\" - opens the players inventory");
+                    System.out.println("\"stats\" - prints your current stats");
                 }
-                case "inventory" -> {
+                case "inventory" ->
+                {
+                    utils.delay(500);
                     userInterface.browseInventory();
                 }
+                case "stats" ->
+                {
+                    utils.delay(500);
+                    userInterface.printStats();
+                }
+                case "testfight" ->
+                {
+                    utils.delay(500);
+                    Combat testCombat = new Combat(EnemyManager.createBasicZombie());
+                    testCombat.start();
+                }
+
                 default ->
                 {
                     System.out.println("\"Invalid command. Type \\\"help\\\" for a list of commands.");

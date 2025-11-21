@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -6,12 +7,14 @@ public class Player
     private PlayerClass playerClass;
     private String name;
 
+    private int level;
+
     private int vigor;
     private int strength;
     private int defense;
     private int intelligence;
 
-
+    private double critChance;
     private int critMultiplier;
     private int evadeChance;
 
@@ -21,6 +24,7 @@ public class Player
 
     private Inventory inventory = new Inventory();
     private Item equippedWeapon;
+
 
 
     public enum PlayerClass
@@ -72,7 +76,49 @@ public class Player
         {
             return evadeChance;
         }
+
     }
+    public int getVigor() {
+        return vigor;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public double getCritChance()
+    {
+        return critChance;
+    }
+    public int getCritMultiplier() {
+        return critMultiplier;
+    }
+    public int getCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
+
+
+    public int getEvadeChance() {
+        return evadeChance;
+    }
+    public Item getEquippedWeapon()
+    {
+        return equippedWeapon;
+    }
+
 
 
     public Player(String name, PlayerClass playerClass)
@@ -96,13 +142,30 @@ public class Player
             case ROGUE -> inventory.addItem(ItemManager.createBasicDagger());
             case GUARDIAN -> inventory.addItem(ItemManager.createBasicWarHammer());
         }
+
+        equippedWeapon = inventory.getItems().get(0);
     }
 
 
     private void calculateStats()
     {
+        DifficultyManager.difficulty diff = DifficultyManager.getCurrentDifficulty();
+
         this.maxHealth = vigor * 10;
+        maxHealth = (int) (maxHealth * diff.getPlayerHealthMultiplier());
         this.currentHealth = maxHealth;
+
+        level = getVigor() + getStrength() + getIntelligence() + getDefense();
+        double maxCrit = 0.5;
+        double k = 0.12;
+        double x0 = 70;
+        double threshold = 30;
+
+        double sigmoid = maxCrit / (1 + Math.exp(-k * (level - x0)));
+
+        double suppression = 1 - (threshold / (level + threshold));
+
+        critChance = sigmoid * suppression;
 
     }
 
@@ -179,17 +242,158 @@ public class Player
         return currentPlayer;
     }
 
-    public boolean isAlive()
+
+    public void printStats()
     {
-        if(currentHealth > 0)
+        System.out.println("=== PLAYER STATS ===");
+        System.out.println("Vigor: " + getVigor());
+        System.out.println("Strength: " + getStrength());
+        System.out.println("Defense: " + getDefense());
+        System.out.println("Intelligence: " + getIntelligence());
+        System.out.println("Critical Multiplier: " + getCritMultiplier());
+        System.out.println("Evade Chance: " + getEvadeChance() + "%");
+
+        System.out.println("Current Health: " + currentHealth + "/" + maxHealth);
+
+        System.out.println("====================");
+    }
+
+    // COMBAT
+
+    public int calculatePlayerDamage(int strength, int weaponBaseDamage, double critChancePercent, int critMultiplier)
+    {
+        int baseDamage = weaponBaseDamage + strength;
+
+        // : Determine if crit
+        boolean isCrit = utils.randomInt(1, 100) <= critChancePercent;
+
+        // crit multiplier
+        double damage = baseDamage;
+        if (isCrit)
         {
-            return true;
+            damage *= critMultiplier;
+            System.out.println("Critical Hit!");
         }
-        else
+
+        // variance
+        double variance = utils.randomDouble(0.9, 1.1);
+        damage *= variance;
+
+        // Round
+        int finalDamage = Math.max(1, (int) Math.round(damage));
+
+        return finalDamage;
+    }
+
+    public int calculateChargeIncrease() {
+    int maxCharge = 4;
+    int minCharge = 1;
+    int maxLevel = 100;
+
+    double scale = (double)(level - 40) / (maxLevel - 40);
+    if (scale < 0) scale = 0;
+    if (scale > 1) scale = 1;
+
+    double baseCharge = minCharge + scale * (maxCharge - minCharge);
+
+
+    int variance = utils.randomInt(-1, 1);
+
+    int finalCharge = (int) Math.round(baseCharge) + variance;
+
+    // Clamp to minCharge and maxCharge
+    if (finalCharge < minCharge) finalCharge = minCharge;
+    if (finalCharge > maxCharge) finalCharge = maxCharge;
+
+    return finalCharge;
+}
+
+    public double calculateChargeMultiplier() {
+        int minLevel = 30;      // level where multiplier starts increasing
+        int maxLevel = 100;     // level where multiplier nears max
+        double maxMultiplier = 2.5;  // max possible multiplier
+        double minMultiplier = 1.0;  // base multiplier at minLevel
+
+        // Clamp level to range
+        if (level < minLevel) level = minLevel;
+        if (level > maxLevel) level = maxLevel;
+
+        // Parameters for sigmoid curve
+        double k = 0.08;       // steepness
+        double x0 = (maxLevel + minLevel) / 2.0;  // midpoint
+
+        // Sigmoid function scaled between 0 and 1
+        double normalized = 1 / (1 + Math.exp(-k * (level - x0)));
+
+        // Scale sigmoid from minMultiplier to maxMultiplier
+        double multiplier = minMultiplier + normalized * (maxMultiplier - minMultiplier);
+
+        return multiplier;
+    }
+
+    public double calculateDefendSuccessChance() {
+        double maxChance = 0.80;
+        double minChance = 0.25;
+
+        double k = 0.3;               // Steepness of curve
+        double x0 = 10;               // Midpoint defense value for 50% chance
+
+        // Sigmoid function to smooth success chance
+        double sigmoid = 1 / (1 + Math.exp(-k * (defense - x0)));
+
+        // Scale between minChance and maxChance
+        double successChance = minChance + sigmoid * (maxChance - minChance);
+
+        return successChance;
+    }
+
+    public int calculateDamageTaken(int incomingDamage, int defense)
+    {
+        // Calculate damage reduction with diminishing returns
+        double damageReduction = (double) defense / (defense + 100);
+
+        // Apply damage reduction
+        double rawDamage = incomingDamage * (1 - damageReduction);
+
+        // Add random variance
+        double variance = utils.randomDouble(0.9, 1.1);
+        rawDamage *= variance;
+
+        // Minimum damage is 1
+        int finalDamage = (int) Math.max(1, Math.round(rawDamage));
+
+        return finalDamage;
+    }
+
+    public double calculateRunawaySuccessChance() {
+        double maxChance = 0.7;
+        double k = 25.0;         // midpoint shifted right
+        double n = 2.0;          // quadratic curve
+
+        double evadePow = Math.pow(evadeChance, n);
+        double kPow = Math.pow(k, n);
+
+        double chance = maxChance * (evadePow / (evadePow + kPow));
+
+        return chance;
+    }
+
+
+
+    public void takeDamage(int damage)
+    {
+        int damageTaken = calculateDamageTaken(damage, defense);
+        currentHealth -= damageTaken;
+        if(currentHealth < 0)
         {
-            return false;
+            currentHealth = 0;
         }
     }
+
+
+
+
+
 
 
     //INVENTORY STUFF
@@ -212,14 +416,30 @@ public class Player
             return;
         }
 
-        System.out.print("Choose a weapon by number: ");
-        String input = scanner.nextLine();
-        int choice;
-        choice = Integer.parseInt(input);
+        int choice = -1;
+        boolean validChoice = false;
 
-        if (choice < 1 || choice > weapons.size()) {
-            System.out.println("You don't have this many weapons!");
-            return;
+        while (!validChoice)
+        {
+            System.out.print("Choose a weapon by number: ");
+            String input = scanner.nextLine();
+
+            try
+            {
+                choice = Integer.parseInt(input);
+
+                if (choice < 1 || choice > weapons.size()) {
+                    System.out.println("You don't have this many weapons!");
+                }
+                else
+                {
+                    validChoice = true;
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("Invalid input! Please enter a valid number.");
+            }
         }
 
         Item selected = weapons.get(choice - 1);
@@ -228,5 +448,23 @@ public class Player
     }
 
 
+
+    public boolean isAlive()
+    {
+        if(currentHealth > 0)
+        {
+            return true;
+        }
+        else
+        {
+            revive();
+            return false;
+        }
+    }
+
+    public void revive()
+    {
+        currentHealth = maxHealth;
+    }
 }
 

@@ -4,6 +4,8 @@ public class Item
     private String itemType;
 
     private int damage;
+    private int chargeCounter;
+
     private int healAmount;
 
     private ItemType type;
@@ -15,11 +17,12 @@ public class Item
         CONSUMABLE;
     }
 
-    public Item(String name, ItemType type, int damage, int healAmount) {
+    public Item(String name, ItemType type, int damage, int healAmount, int chargeCounter) {
         this.name = name;
         this.type = type;
         this.damage = damage;
         this.healAmount = healAmount;
+        this.chargeCounter = chargeCounter;
     }
 
 
@@ -49,6 +52,16 @@ public class Item
     public String getName()
     {
         return name;
+    }
+
+    public int getDamage()
+    {
+        return damage;
+    }
+
+    public int getChargeCounter()
+    {
+        return chargeCounter;
     }
 
 

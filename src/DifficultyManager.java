@@ -3,9 +3,9 @@ import java.util.Scanner;
 public class DifficultyManager
 {
     public enum difficulty {
-        EASY(0.75, 0.75),
+        EASY(0.75, 1.25),
         MEDIUM(1, 1),
-        HARD(1.25, 1.25);
+        HARD(1.25, 0.90);
 
 
         private double enemyHealthMultiplier;
@@ -29,36 +29,53 @@ public class DifficultyManager
         }
     }
 
+    private static difficulty currentDifficulty = null;
 
     //handle difficulty within the method so main doesn't get messy
     public static difficulty askForDifficulty()
     {
+
+        if(currentDifficulty != null)
+        {
+            return currentDifficulty;
+        }
+
         Scanner scanner = new Scanner(System.in);
-        difficulty currentDifficulty = difficulty.HARD;
         boolean confirmedDifficulty = false;
 
 
         System.out.println("Select your difficulty:");
         System.out.print("EASY \nMEDIUM \nHARD\n");
+        System.out.println("==============================");
+        System.out.print("> ");
 
 
         while(!confirmedDifficulty) {
             String selectedDifficulty = scanner.nextLine();
 
-
             if (selectedDifficulty.equalsIgnoreCase("EASY")) {
                 currentDifficulty = difficulty.EASY;
                 confirmedDifficulty = true;
             }
-            if (selectedDifficulty.equalsIgnoreCase("MEDIUM")) {
+            else if (selectedDifficulty.equalsIgnoreCase("MEDIUM")) {
                 currentDifficulty = difficulty.MEDIUM;
                 confirmedDifficulty = true;
             }
-            if (selectedDifficulty.equalsIgnoreCase("HARD")) {
+            else if (selectedDifficulty.equalsIgnoreCase("HARD")) {
                 currentDifficulty = difficulty.HARD;
                 confirmedDifficulty = true;
             }
+            else
+            {
+                System.out.println("Please enter a valid input");
+                System.out.print("> ");
+            }
         }
+        return currentDifficulty;
+    }
+
+    public static difficulty getCurrentDifficulty()
+    {
         return currentDifficulty;
     }
 }

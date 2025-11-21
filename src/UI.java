@@ -11,6 +11,7 @@ public class UI
 
     Player player = Player.currentPlayer();
 
+
     public void browseInventory()
     {
         hasAnswered = false;
@@ -23,6 +24,7 @@ public class UI
             System.out.println("1.) See Weapons");
             System.out.println("2.) See Potions");
             System.out.println("3.) Equip Weapon");
+            System.out.println("Equipped Weapon: " + player.getEquippedWeapon());
 
             int answer = scanner.nextInt();
             switch (answer) {
@@ -65,5 +67,10 @@ public class UI
     {
         player.equipWeapon(input, player.getInventory());
         hasAnswered = false;
+    }
+
+    public void printStats()
+    {
+        player.printStats();
     }
 }
