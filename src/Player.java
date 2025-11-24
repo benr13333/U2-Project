@@ -110,13 +110,18 @@ public class Player
         return maxHealth;
     }
 
-
     public int getEvadeChance() {
         return evadeChance;
     }
+
     public Item getEquippedWeapon()
     {
         return equippedWeapon;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
 
@@ -257,6 +262,7 @@ public class Player
 
         System.out.println("====================");
     }
+
 
     // COMBAT
 

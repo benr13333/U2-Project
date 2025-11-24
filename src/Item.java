@@ -32,11 +32,11 @@ public class Item
     {
         if (type == ItemType.WEAPON)
         {
-            return String.format("Name: %s, Damage: %d", name, damage);
+            return String.format("Name: %s, Damage: %d, Charge Counter: %d", name, damage, chargeCounter);
         }
         else if (type == ItemType.CONSUMABLE)
         {
-            return String.format("Name: %s, Heal: %d", name, healAmount);
+            return String.format("Name: %s, Heal: %d",  name, healAmount);
         }
         else
         {

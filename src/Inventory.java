@@ -6,7 +6,8 @@ public class Inventory
     private ArrayList<Item> inventory = new ArrayList<>();
 
 
-    public ArrayList<Item> getItems() {
+    public ArrayList<Item> getItems()
+    {
         return inventory;
     }
 
