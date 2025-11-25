@@ -11,6 +11,7 @@ public class UI
 
     Player player = Player.currentPlayer();
     ItemManager itemManager = new ItemManager(player.getInventory());
+    EnemyManager enemyManager = new EnemyManager();
 
 
     public void browseInventory()
@@ -25,7 +26,7 @@ public class UI
             System.out.println("1.) See Weapons");
             System.out.println("2.) See Potions");
             System.out.println("3.) Equip Weapon");
-            System.out.println("9.) Leave");
+            System.out.println("0.) Leave");
             System.out.println("Equipped Weapon: " + player.getEquippedWeapon());
             System.out.println("Coins: " + player.getCurrentCoins());
 
@@ -52,11 +53,12 @@ public class UI
                     equipWeapon();
                     hasAnswered = true;
                 }
-                case 9 ->
+                case 0 ->
                 {
                     hasAnswered = true;
                     break;
                 }
+
                 default -> {
                     System.out.println("Invalid Input! Try again. \n");
                     utils.delay(200);
@@ -111,8 +113,10 @@ public class UI
             System.out.println("===========================");
             System.out.println("1.) Create New Weapon");
             System.out.println("2.) Create New Enemy");
+            System.out.println("3.) Fight Enemy");
             System.out.println("8.) Set Coin Amount");
             System.out.println("9.) Set Player Level");
+            System.out.println("0.) Leave");
             System.out.println("Player Name: " + player.getName());
             System.out.println("Coins: " + player.getCurrentCoins());
             System.out.println("===========================");
@@ -137,7 +141,12 @@ public class UI
                 case 2 ->
                 {
                     hasAnswered = true;
-                    //EnemyManager.createNewEnemy();
+                    enemyManager.createNewEnemy();
+                }
+                case 3 ->
+                {
+                    hasAnswered = true;
+                    fightEnemy();
                 }
                 case 8 ->
                 {
@@ -148,6 +157,11 @@ public class UI
                 {
                     hasAnswered = true;
                     setLevelMenu();
+                }
+                case 0 ->
+                {
+                    hasAnswered = true;
+                    return;
                 }
 
                 default -> {
@@ -194,22 +208,18 @@ public class UI
             switch (answer) {
                 case 1 ->
                 {
-                    hasAnswered = true;
                     player.upgradeStat("Vigor");
                 }
                 case 2 ->
                 {
-                    hasAnswered = true;
                     player.upgradeStat("Strength");
                 }
                 case 3 ->
                 {
-                    hasAnswered = true;
                     player.upgradeStat("Defense");
                 }
                 case 4 ->
                 {
-                    hasAnswered = true;
                     player.upgradeStat("Intelligence");
                 }
                 case 5 ->
@@ -250,10 +260,15 @@ public class UI
             return;
         }
 
-        System.out.println("Set Level To?");
+        System.out.println("Set Level To? (Max 150)");
         int level;
         if (scanner.hasNextInt()) {
             level = scanner.nextInt();
+            if (level > 150)
+            {
+                System.out.println("Invalid Input! Try again. \n");
+                return;
+            }
         } else {
             scanner.next();
             System.out.println("Invalid Input! Try again. \n");
@@ -295,6 +310,21 @@ public class UI
         }
     }
 
+    public void fightEnemy()
+    {
+        if(enemyManager.returnEnemies().isEmpty())
+        {
+            System.out.println("Custom Enemy List is Empty! Please create a new enemy first");
+            return;
+        }
+        else
+        {
+            System.out.println("Choose an enemy to fight");
+            enemyManager.printEnemies();
+
+        }
+    }
+
     public void setCoins()
     {
         int setCoinsTo;
@@ -313,5 +343,8 @@ public class UI
         System.out.println("New Coins Amount: " + player.getCurrentCoins());
         utils.delay(100);
     }
+
+
+
 
 }

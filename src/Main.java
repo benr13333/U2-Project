@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class Main
 {
+    UI userInterface = new UI();
+
     public static void main(String[] args)
     {
         DifficultyManager.difficulty currentDifficulty = DifficultyManager.askForDifficulty();
@@ -13,7 +15,6 @@ public class Main
     }
 
     public void Start() {
-        UI userInterface = new UI();
         Scanner scanner = new Scanner(System.in);
         Boolean inputActive = true;
 
@@ -47,7 +48,7 @@ public class Main
                 }
                 case "upgrade" ->
                 {
-                    utils.delay(200);
+                    utils.delay(100);
                     userInterface.openUpgradeMenu();
                 }
                 case "testfight" ->
@@ -65,5 +66,11 @@ public class Main
             }
 
         }
+
+    }
+
+    public UI getUI()
+    {
+        return userInterface;
     }
 }

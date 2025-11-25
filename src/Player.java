@@ -185,6 +185,7 @@ public class Player
 
         critChance = sigmoid * suppression;
 
+
     }
 
 
@@ -501,6 +502,33 @@ public class Player
     {
         int cost = calculateUpgradeCost();
 
+        switch (statName) {
+            case "Vigor" -> {
+                if (vigor >= 150) {
+                    System.out.println("Vigor is already at the maximum level (150)!");
+                    return;
+                }
+            }
+            case "Strength" -> {
+                if (strength >= 150) {
+                    System.out.println("Strength is already at the maximum level (150)!");
+                    return;
+                }
+            }
+            case "Defense" -> {
+                if (defense >= 150) {
+                    System.out.println("Defense is already at the maximum level (150)!");
+                    return;
+                }
+            }
+            case "Intelligence" -> {
+                if (intelligence >= 150) {
+                    System.out.println("Intelligence is already at the maximum level (150)!");
+                    return;
+                }
+            }
+        }
+
         if (currentCoins >= cost) {
             switch (statName) {
                 case "Vigor" -> vigor += 1;
@@ -511,12 +539,14 @@ public class Player
             calculateStats();
             System.out.println("Upgraded " + statName + "! Cost: " + cost + " coins.");
             currentCoins -= cost;
+
         }
         else
         {
             System.out.println("You don't have enough coins to upgrade! Need: " + calculateUpgradeCost());
         }
     }
+
 
 
 

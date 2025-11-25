@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class utils
 {
     public static void printEllipses(int dots, int delay)
@@ -48,4 +50,12 @@ public class utils
         return Math.random() * (max - min) + min;
     }
 
+
+    public static int getValidInt(Scanner scanner) {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Invalid input. Please enter a number: ");
+            scanner.next(); // discard invalid input
+        }
+        return scanner.nextInt();
+    }
 }
