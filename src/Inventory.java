@@ -49,15 +49,21 @@ public class Inventory
 
     public void printPotions()
     {
-        for(int i = 0; i <= inventory.size() - 1; i++)
-        {
-            Item item = inventory.get(i);
-            if (item.getType() == Item.ItemType.CONSUMABLE)
-            {
-                System.out.println(item);
-                System.out.println("----------------");
+        int count = 0;
+            for (int i = 0; i <= inventory.size() - 1; i++) {
+                Item item = inventory.get(i);
+                if (item.getType() == Item.ItemType.CONSUMABLE) {
+                    System.out.println(item);
+                    System.out.println("----------------");
+                    count++;
+                }
             }
-        }
+            if (count == 0)
+            {
+                System.out.println("You have no potions!");
+                utils.delay(200);
+                count = 0;
+            }
     }
 
 

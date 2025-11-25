@@ -25,6 +25,8 @@ public class Player
     private Inventory inventory = new Inventory();
     private Item equippedWeapon;
 
+    private int currentCoins;
+
 
 
     public enum PlayerClass
@@ -124,6 +126,15 @@ public class Player
         return name;
     }
 
+    public int getCurrentCoins()
+    {
+        return currentCoins;
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
 
 
     public Player(String name, PlayerClass playerClass)
@@ -137,6 +148,7 @@ public class Player
         this.intelligence = playerClass.getIntelligence();
         this.critMultiplier = playerClass.getCritMultiplier();
         this.evadeChance = playerClass.getEvadeChance();
+
 
         calculateStats();
 
@@ -156,11 +168,12 @@ public class Player
     {
         DifficultyManager.difficulty diff = DifficultyManager.getCurrentDifficulty();
 
+        level = getVigor() + getIntelligence() + getDefense() + getStrength();
+
         this.maxHealth = vigor * 10;
         maxHealth = (int) (maxHealth * diff.getPlayerHealthMultiplier());
         this.currentHealth = maxHealth;
 
-        level = getVigor() + getStrength() + getIntelligence() + getDefense();
         double maxCrit = 0.5;
         double k = 0.12;
         double x0 = 70;
@@ -396,10 +409,17 @@ public class Player
         }
     }
 
+    // COINS
 
+    public void addCoins(int numberAdded)
+    {
+        currentCoins+=numberAdded;
+    }
 
-
-
+    public void setCoins(int setNumber)
+    {
+        currentCoins = setNumber;
+    }
 
 
     //INVENTORY STUFF
@@ -472,5 +492,62 @@ public class Player
     {
         currentHealth = maxHealth;
     }
+
+
+
+    // LEVELING
+
+    public void upgradeStat(String statName)
+    {
+        int cost = calculateUpgradeCost();
+
+        if (currentCoins >= cost) {
+            switch (statName) {
+                case "Vigor" -> vigor += 1;
+                case "Strength" -> strength += 1;
+                case "Defense" -> defense += 1;
+                case "Intelligence" -> intelligence += 1;
+            }
+            calculateStats();
+            System.out.println("Upgraded " + statName + "! Cost: " + cost + " coins.");
+            currentCoins -= cost;
+        }
+        else
+        {
+            System.out.println("You don't have enough coins to upgrade! Need: " + calculateUpgradeCost());
+        }
+    }
+
+
+
+    private int calculateUpgradeCost()
+    {
+        int lvl = level;
+
+        double x = Math.max((lvl + 81) - 92, 0) * 0.02;
+        double cost = (x + 0.1) * Math.pow(lvl + 81, 2) + 1;
+
+        int adjustedCost = (int) (cost / 10);
+
+        return adjustedCost;
+    }
+
+    public void setLevel(String statName, int level)
+    {
+        switch (statName)
+        {
+            case "Vigor" -> vigor = level;
+            case "Strength" -> strength = level;
+            case "Defense" -> defense = level;
+            case "Intelligence" -> intelligence = level;
+        }
+        calculateStats();
+        System.out.println("Upgraded " + statName + "!");
+
+
+    }
+
+
+
 }
 

@@ -27,8 +27,17 @@ public class UI
             System.out.println("3.) Equip Weapon");
             System.out.println("9.) Leave");
             System.out.println("Equipped Weapon: " + player.getEquippedWeapon());
+            System.out.println("Coins: " + player.getCurrentCoins());
 
-            int answer = scanner.nextInt();
+            int answer;
+            if (scanner.hasNextInt()) {
+                answer = scanner.nextInt();
+            } else {
+                scanner.next();
+                System.out.println("Invalid Input! Try again. \n");
+                utils.delay(200);
+                continue;
+            }
             switch (answer) {
                 case 1 -> {
                     seeWeapons();
@@ -101,18 +110,46 @@ public class UI
             System.out.println("CHEATS");
             System.out.println("===========================");
             System.out.println("1.) Create New Weapon");
+            System.out.println("2.) Create New Enemy");
+            System.out.println("8.) Set Coin Amount");
+            System.out.println("9.) Set Player Level");
             System.out.println("Player Name: " + player.getName());
+            System.out.println("Coins: " + player.getCurrentCoins());
             System.out.println("===========================");
 
 
 
-            int answer = scanner.nextInt();
+            int answer;
+            if (scanner.hasNextInt()) {
+                answer = scanner.nextInt();
+            } else {
+                scanner.next();
+                System.out.println("Invalid Input! Try again. \n");
+                utils.delay(200);
+                continue;
+            }
             switch (answer) {
                 case 1 ->
                 {
                     hasAnswered = true;
                     itemManager.createNewWeapon();
                 }
+                case 2 ->
+                {
+                    hasAnswered = true;
+                    //EnemyManager.createNewEnemy();
+                }
+                case 8 ->
+                {
+                    hasAnswered = true;
+                    setCoins();
+                }
+                case 9 ->
+                {
+                    hasAnswered = true;
+                    setLevelMenu();
+                }
+
                 default -> {
                     System.out.println("Invalid Input! Try again. \n");
                     utils.delay(200);
@@ -120,4 +157,161 @@ public class UI
             }
         }
     }
+
+    public void openUpgradeMenu()
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        Scanner input = new Scanner(System.in);
+
+        boolean hasAnswered = false;
+
+        hasAnswered = false;
+
+        Player player = Player.currentPlayer();
+
+        while (!hasAnswered)
+        {
+
+            System.out.println("=== UPGRADE MENU ===");
+            System.out.println("Level: " + player.getLevel());
+            System.out.println("Coins: " + player.getCurrentCoins());
+            System.out.println("1. Vigor (" + player.getVigor() + ") - Increases Health");
+            System.out.println("2. Strength (" + player.getStrength() + ") - Increases Attack");
+            System.out.println("3. Defense (" + player.getDefense() + ") - Reduces Damage");
+            System.out.println("4. Intelligence (" + player.getIntelligence() + ")");
+            System.out.println("5. Exit");
+
+            int answer;
+            if (scanner.hasNextInt()) {
+                answer = scanner.nextInt();
+            } else {
+                scanner.next();
+                System.out.println("Invalid Input! Try again. \n");
+                utils.delay(200);
+                continue;
+            }
+            switch (answer) {
+                case 1 ->
+                {
+                    hasAnswered = true;
+                    player.upgradeStat("Vigor");
+                }
+                case 2 ->
+                {
+                    hasAnswered = true;
+                    player.upgradeStat("Strength");
+                }
+                case 3 ->
+                {
+                    hasAnswered = true;
+                    player.upgradeStat("Defense");
+                }
+                case 4 ->
+                {
+                    hasAnswered = true;
+                    player.upgradeStat("Intelligence");
+                }
+                case 5 ->
+                {
+                    hasAnswered = true;
+                    break;
+                }
+
+                default -> {
+                    System.out.println("Invalid Input! Try again. \n");
+                    utils.delay(200);
+                }
+            }
+        }
+    }
+
+    public void setLevelMenu()
+    {
+        System.out.println("\n=== SET LEVEL ===");
+        System.out.println("1. Vigor (" + player.getVigor() + ") - Increases Health");
+        System.out.println("2. Strength (" + player.getStrength() + ") - Increases Attack");
+        System.out.println("3. Defense (" + player.getDefense() + ") - Reduces Damage");
+        System.out.println("4. Intelligence (" + player.getIntelligence() + ")");
+        System.out.println("5. Exit");
+
+        int answer;
+        if (scanner.hasNextInt()) {
+            answer = scanner.nextInt();
+        } else {
+            scanner.next();
+            System.out.println("Invalid Input! Try again. \n");
+            utils.delay(200);
+            return;
+        }
+
+        if (answer == 5)
+        {
+            return;
+        }
+
+        System.out.println("Set Level To?");
+        int level;
+        if (scanner.hasNextInt()) {
+            level = scanner.nextInt();
+        } else {
+            scanner.next();
+            System.out.println("Invalid Input! Try again. \n");
+            utils.delay(200);
+            return;
+        }
+
+        switch (answer) {
+            case 1 ->
+            {
+                hasAnswered = true;
+                player.setLevel("Vigor", level);
+            }
+            case 2 ->
+            {
+                hasAnswered = true;
+                player.setLevel("Strength", level);
+            }
+            case 3 ->
+            {
+                hasAnswered = true;
+                player.setLevel("Defense", level);
+            }
+            case 4 ->
+            {
+                hasAnswered = true;
+                player.setLevel("Intelligence", level);
+            }
+            case 5 ->
+            {
+                hasAnswered = true;
+                break;
+            }
+
+            default -> {
+                System.out.println("Invalid Input! Try again. \n");
+                utils.delay(200);
+            }
+        }
+    }
+
+    public void setCoins()
+    {
+        int setCoinsTo;
+        System.out.print("Set Coins To? ");
+        if (scanner.hasNextInt())
+        {
+            setCoinsTo = scanner.nextInt();
+        }
+        else
+        {
+            scanner.next();
+            System.out.println("Invalid Input! Coins not set.\n");
+            return;
+        }
+        player.setCoins(setCoinsTo);
+        System.out.println("New Coins Amount: " + player.getCurrentCoins());
+        utils.delay(100);
+    }
+
 }

@@ -35,6 +35,9 @@ public class Combat
             if (!enemy.isAlive())
             {
                 System.out.println("Victory!");
+                int coinsDropped = enemy.getCoinsDropped();
+                player.addCoins(coinsDropped);
+                System.out.println("Gained " + coinsDropped + " coins!");
                 player.revive();
                 break;
             }

@@ -5,7 +5,9 @@ public class Enemy
     private int currentHealth;
     private int strength;
     private int defense;
-    private int level;  // Added level field
+    private int level;
+    private int coinsDropped;
+    private int randomizedDrop;
 
     private enemyType type;
 
@@ -16,7 +18,7 @@ public class Enemy
     }
 
     // Updated constructor with level
-    public Enemy(String name, int maxHealth, int strength, int defense, int level, enemyType type)
+    public Enemy(String name, int maxHealth, int strength, int defense, int level, enemyType type, int coinsDropped)
     {
         this.name = name;
         this.maxHealth = maxHealth;
@@ -25,6 +27,7 @@ public class Enemy
         this.defense = defense;
         this.level = level;
         this.type = type;
+        this.coinsDropped = coinsDropped;
     }
 
     // Getters
@@ -51,6 +54,11 @@ public class Enemy
     public int getLevel()
     {
         return level;
+    }
+    public int getCoinsDropped()
+    {
+        randomizedDrop += (int) utils.randomDouble(0.90 * coinsDropped, 1.1 * coinsDropped);
+        return randomizedDrop;
     }
 
     // Calculates how much damage enemy takes after defense reduction and variance

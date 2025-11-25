@@ -27,6 +27,7 @@ public class Main
                     System.out.println("\nHELP COMMANDS \n========================");
                     System.out.println("\"inventory\" - opens the players inventory");
                     System.out.println("\"stats\" - prints your current stats");
+                    System.out.println("\"upgrade\" - opens the upgrade menu");
                     System.out.println("\"cheats\" - opens a cheat menu");
                 }
                 case "inventory" ->
@@ -43,6 +44,11 @@ public class Main
                 {
                     utils.delay(300);
                     userInterface.openCheatMenu();
+                }
+                case "upgrade" ->
+                {
+                    utils.delay(200);
+                    userInterface.openUpgradeMenu();
                 }
                 case "testfight" ->
                 {
