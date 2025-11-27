@@ -1,26 +1,27 @@
+import java.io.Serializable;
 import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class Player
+public class Player implements Serializable
 {
     private PlayerClass playerClass;
     private String name;
 
-    private int level;
+    public int level;
 
-    private int vigor;
-    private int strength;
-    private int defense;
-    private int intelligence;
+    public int vigor;
+    public int strength;
+    public int defense;
+    public int intelligence;
 
     private double critChance;
     private int critMultiplier;
     private int evadeChance;
 
 
-    private int maxHealth;
-    private int currentHealth;
+    public int maxHealth;
+    public int currentHealth;
 
     private Inventory inventory = new Inventory();
     private Item equippedWeapon;
@@ -252,14 +253,23 @@ public class Player
     }
 
 
-    //This makes multiple players not work but I probably won't do that so it doesn't matter
-    //It also saves me a bunch of time
+
+    //Player stuff
     private static Player currentPlayer;
 
     public static Player currentPlayer()
     {
         return currentPlayer;
     }
+
+    public static void setCurrentPlayer(Player player) {
+        currentPlayer = player;
+    }
+
+    public PlayerClass getPlayerClass() {
+        return playerClass;
+    }
+
 
 
     public void printStats()
@@ -271,8 +281,10 @@ public class Player
         System.out.println("Intelligence: " + getIntelligence());
         System.out.println("Critical Multiplier: " + getCritMultiplier());
         System.out.println("Evade Chance: " + getEvadeChance() + "%");
-
         System.out.println("Current Health: " + currentHealth + "/" + maxHealth);
+        System.out.println("====================");
+        System.out.println("Equipped Weapon: " + equippedWeapon);
+        System.out.println("Coins: " + currentCoins);
 
         System.out.println("====================");
     }
@@ -577,6 +589,13 @@ public class Player
 
     }
 
+
+
+    //SAVE STUFF
+    public void autoEquipWeapon(Item weapon)
+    {
+        this.equippedWeapon = weapon;
+    }
 
 
 }

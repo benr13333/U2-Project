@@ -78,4 +78,9 @@ public class DifficultyManager
     {
         return currentDifficulty;
     }
+
+    public static void setDifficulty(difficulty diff)
+    {
+        currentDifficulty = diff;
+    }
 }

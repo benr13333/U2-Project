@@ -63,7 +63,7 @@ public class EnemyManager
         for(int i = 0; i <= enemies.size() - 1; i++)
         {
             Enemy enemy = enemies.get(i);
-            System.out.println("1.)" + enemy.getName());
+            System.out.println("1. " + enemy.getName());
             System.out.println("----------------");
         }
     }
