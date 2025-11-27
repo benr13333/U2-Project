@@ -2,8 +2,11 @@ import java.util.Scanner;
 
 public class Main
 {
-    UI userInterface = new UI();
+    // **IMPORTANT**
+    // IMPORT GSON BEFORE RUNNING
+    // com.google.code.gson:gson
 
+    UI userInterface = new UI();
 
     public static void main(String[] args)
     {
