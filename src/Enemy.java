@@ -112,4 +112,9 @@ public class Enemy
         // Minimum damage is 1
         return Math.max(1, (int) Math.round(rawDamage));
     }
+
+    public void resetHP()
+    {
+        currentHealth = maxHealth;
+    }
 }

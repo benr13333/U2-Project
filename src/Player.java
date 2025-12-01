@@ -308,7 +308,7 @@ public class Player implements Serializable
         }
 
         // variance
-        double variance = utils.randomDouble(0.9, 1.1);
+        double variance = utils.randomDouble(0.95, 1.05);
         damage *= variance;
 
         // Round

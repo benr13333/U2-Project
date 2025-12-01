@@ -4,7 +4,7 @@ public class Main
 {
     // **IMPORTANT**
     // IMPORT GSON BEFORE RUNNING
-    // com.google.code.gson:gson
+    // com.google.code.gson:gson:2.13.0
 
     UI userInterface = new UI();
 
@@ -12,8 +12,8 @@ public class Main
     {
 
         if (!SaveManager.hasAnySaves()) {
+            DifficultyManager.askForDifficulty();
             Player.playerCreation();
-            DifficultyManager.difficulty currentDifficulty = DifficultyManager.askForDifficulty();
         } else {
             System.out.println("=== START ===");
             System.out.println("1. New Game");
@@ -38,6 +38,13 @@ public class Main
     }
 
     public void Start() {
+        System.out.println("=============================");
+        System.out.println("RPG SANDBOX");
+        System.out.println("Type help for commands");
+        System.out.println("Type cheats to create weapons and enemies to fight");
+        System.out.println("Upon creating an enemy, type cheats again to fight it");
+        System.out.println("=============================");
+
         Scanner scanner = new Scanner(System.in);
         Boolean inputActive = true;
 

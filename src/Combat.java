@@ -39,6 +39,7 @@ public class Combat
                 player.addCoins(coinsDropped);
                 System.out.println("Gained " + coinsDropped + " coins!");
                 player.revive();
+                enemy.resetHP();
                 break;
             }
             enemyTurn();
@@ -159,7 +160,7 @@ public class Combat
             System.out.println(enemy.getName() + " dodged your attack!");
         }
         else {
-            int damage = (int) (2 * player.calculatePlayerDamage(player.getStrength(), player.getEquippedWeapon().getDamage(), player.getCritChance(), player.getCritMultiplier()));
+            int damage = (int) (player.calculatePlayerDamage(player.getStrength(), player.getEquippedWeapon().getDamage(), player.getCritChance(), player.getCritMultiplier()));
             enemy.takeDamage(damage);
             System.out.print(enemy.getName() + " took " + damage + " damage! \nit's new HP is " + enemy.getCurrentHealth());
         }
@@ -168,7 +169,7 @@ public class Combat
 
     public void charge()
     {
-        int damage = player.calculatePlayerDamage(player.getStrength(), player.getEquippedWeapon().getDamage(), player.getCritChance(), player.getCritMultiplier());
+        int damage = player.calculatePlayerDamage(player.getStrength(), player.getEquippedWeapon().getDamage(), player.getCritChance() * 100, player.getCritMultiplier());
         int chargeIncrement = player.calculateChargeIncrease();
         int chargeGauge = player.getEquippedWeapon().getChargeCounter();
 
